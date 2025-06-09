@@ -1,1 +1,1 @@
-# odin-battleship
+This project is meant to use test driven development to build an online version of Battleship.
