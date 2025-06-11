@@ -52,21 +52,46 @@ class Gameboard {
                     this.board[rowStart + i][columnStart] = name;
                 }
             }
-            
-        };
+        }
     }
 
     #checkValidPlacement([rowStart, columnStart], [rowEnd, columnEnd]) {
         if (rowStart < 0 || columnStart < 0 || rowEnd < 0 || columnEnd < 0) {
-            return false
+            throw new Error('Coordinate must be within bounds');
         }
         if (rowStart > this.rows || columnStart > this.columns || rowEnd > this.rows || columnEnd > this.columns) {
-            return false
+            throw new Error('Coordinate must be within bounds');
         }
         if (rowStart != rowEnd && columnStart != columnEnd) {
-            return false
+            throw new Error('Ships must be placed fully vertical or horizontal');
         }
         return true
+    }
+
+    receiveAttack([letter, rowNumber]) {
+        if(this.#checkValidAttack(letter, rowNumber)) {
+            let coordinate = [rowNumber, this.#letterToCoordinate(letter)];
+            return coordinate
+        }
+    }
+
+    #checkValidAttack([letter, rowNumber]) {
+        let validLetters = 'abcdefghij'
+
+        if(letter.length != 1) {
+            throw new Error('Only enter one letter');
+        }
+        if(!validLetters.includes(letter.toLowerCase())) {
+            throw new Error('Invalid letter');
+        }
+        if(rowNumber < 0 || rowNumber > this.rows) {
+            throw new Error('Number must be within bounds');
+        }
+        return true
+    }
+
+    #letterToCoordinate(letter) {
+        return letter.toLowerCase().charCodeAt(0) - 97;
     }
 }
 

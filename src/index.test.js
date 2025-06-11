@@ -55,3 +55,15 @@ test('check that hits register for only ship that was hit', () => {
     board.board[0][3].hit();
     expect(board.board[1][3].hits).toBe(0);
 });
+
+test('check receive attack coordinates', () => {
+    const board = new Gameboard();
+    expect(board.receiveAttack(['A', 1])).toEqual([1, 0]);
+});
+
+test('check receive attack coordinates', () => {
+    const board = new Gameboard();
+    expect(()=>{
+        board.receiveAttack(['K', 1])
+    }).toThrow('Invalid letter');
+});
