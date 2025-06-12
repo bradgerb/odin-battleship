@@ -65,6 +65,19 @@ class Gameboard {
         if (rowStart != rowEnd && columnStart != columnEnd) {
             throw new Error('Ships must be placed fully vertical or horizontal');
         }
+        if (rowStart === rowEnd) {
+            for(let i = 0; i < Math.abs(columnEnd - columnStart); i++) {
+                if (this.board[rowStart][columnStart + i] != null) {
+                    throw new Error('Ships may not be stacked');
+                }
+            }
+        } else {
+            for(let i = 0; i < Math.abs(rowEnd - rowStart); i++) {
+                if (this.board[rowStart + i][columnStart] != null) {
+                    throw new Error('Ships may not be stacked');
+                }
+            }
+        }
         return true
     }
 

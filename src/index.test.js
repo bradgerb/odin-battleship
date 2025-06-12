@@ -67,3 +67,23 @@ test('check receive attack coordinates', () => {
         board.receiveAttack(['K', 1])
     }).toThrow('Invalid letter');
 });
+
+test('check ship stacking restriction horizontally', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    const destroyer = new Ship(4);
+    board.placeShip('battleship', [0, 0], [0, 4]);
+    expect(()=>{
+        board.placeShip('destroyer', [0, 0], [0, 3])
+    }).toThrow('Ships may not be stacked');
+});
+
+test('check ship stacking restriction vertically', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    const destroyer = new Ship(4);
+    board.placeShip('battleship', [0, 0], [0, 4]);
+    expect(()=>{
+        board.placeShip('destroyer', [0, 3], [3, 3])
+    }).toThrow('Ships may not be stacked');
+});
