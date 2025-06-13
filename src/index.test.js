@@ -95,7 +95,7 @@ test('check shots fired hits', () => {
     const battleship = new Ship(5);
     board.placeShip('battleship', [1, 0], [1, 4]);
     board.receiveAttack(['A', 1]);
-    expect(board.shotsFired[1, 0]).toBe('hit');
+    expect(board.shotsFired[(1 * 10) + 0]).toBe('hit');
 });
 
 test('check shots fired misses', () => {
@@ -103,7 +103,7 @@ test('check shots fired misses', () => {
     const battleship = new Ship(5);
     board.placeShip('battleship', [1, 0], [1, 4]);
     board.receiveAttack(['A', 9]);
-    expect(board.shotsFired[9, 0]).toBe('miss');
+    expect(board.shotsFired[(9 * 10) + 0]).toBe('miss');
 });
 
 test('check shots fired for square not yet shot', () => {
@@ -111,7 +111,7 @@ test('check shots fired for square not yet shot', () => {
     const battleship = new Ship(5);
     board.placeShip('battleship', [1, 0], [1, 4]);
     board.receiveAttack(['A', 1]);
-    expect(board.shotsFired[9, 9]).toBe(undefined);
+    expect(board.shotsFired[(9 * 10) + 9]).toBe(undefined);
 });
 
 test('check shots fired on same square again', () => {
@@ -122,4 +122,36 @@ test('check shots fired on same square again', () => {
     expect(()=>{
         board.receiveAttack(['A', 1])
     }).toThrow('That square has already been fired upon');
+});
+
+test('check all sunk when false', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    const destroyer = new Ship(4);
+    board.placeShip('battleship', [0, 0], [0, 4]);
+    board.placeShip('destroyer', [1, 0], [1, 3]);
+    board.receiveAttack(['A', 0]);
+    board.receiveAttack(['B', 0]);
+    board.receiveAttack(['C', 0]);
+    board.receiveAttack(['D', 0]);
+    board.receiveAttack(['E', 0]);
+    expect(board.allSunk()).toBe(false);
+});
+
+test('check all sunk when true', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    const destroyer = new Ship(4);
+    board.placeShip('battleship', [0, 0], [0, 4]);
+    board.placeShip('destroyer', [1, 0], [1, 3]);
+    board.receiveAttack(['A', 0]);
+    board.receiveAttack(['B', 0]);
+    board.receiveAttack(['C', 0]);
+    board.receiveAttack(['D', 0]);
+    board.receiveAttack(['E', 0]);
+    board.receiveAttack(['A', 1]);
+    board.receiveAttack(['B', 1]);
+    board.receiveAttack(['C', 1]);
+    board.receiveAttack(['D', 1]);
+    expect(board.allSunk()).toBe(true);
 });

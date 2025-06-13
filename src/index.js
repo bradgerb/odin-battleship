@@ -22,7 +22,8 @@ class Gameboard {
         this.rows = 10;
         this.columns = 10;
         this.board = [];
-        this.shotsFired = {}
+        this.shotsFired = {};
+        this.shipsOnBoard = [];
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = new Array(this.columns).fill(null)
         }
@@ -46,10 +47,13 @@ class Gameboard {
             if (orientation === 'horizontal') {
                 for (let i = 0; i < shipLength; i++) {
                     this.board[rowStart][columnStart + i] = name;
+                    this.shipsOnBoard.push(name);
                 }
             } else {
                 for (let i = 0; i < shipLength; i++) {
                     this.board[rowStart + i][columnStart] = name;
+                    this.shipsOnBoard.push(name);
+
                 }
             }
         }
@@ -86,10 +90,11 @@ class Gameboard {
             let coordinate = [rowNumber, this.#letterToCoordinate(letter)];
             
             if(this.board[rowNumber][this.#letterToCoordinate(letter)] != null) {
-                this.shotsFired[rowNumber, this.#letterToCoordinate(letter)] = 'hit';
+                //shotsFired hash - (row * 10) + column
+                this.shotsFired[(rowNumber * 10) + this.#letterToCoordinate(letter)] = 'hit';
                 this.board[rowNumber][this.#letterToCoordinate(letter)].hit();
             } else {
-                this.shotsFired[rowNumber, this.#letterToCoordinate(letter)] = 'miss';
+                this.shotsFired[(rowNumber * 10) + this.#letterToCoordinate(letter)] = 'miss';
             }
             return coordinate
         }
@@ -107,7 +112,7 @@ class Gameboard {
         if(rowNumber < 0 || rowNumber > this.rows) {
             throw new Error('Number must be within bounds');
         }
-        if(this.shotsFired[rowNumber, this.#letterToCoordinate(letter)]) {
+        if(this.shotsFired[(rowNumber * 10) + this.#letterToCoordinate(letter)]) {
             throw new Error('That square has already been fired upon');
         }
         return true
@@ -115,6 +120,15 @@ class Gameboard {
 
     #letterToCoordinate(letter) {
         return letter.toLowerCase().charCodeAt(0) - 97;
+    }
+
+    allSunk() {
+        for(let i = 0; i < this.shipsOnBoard.length; i++) {
+            if(!this.shipsOnBoard[i].isSunk()) {
+                return false
+            }
+        }
+        return true
     }
 }
 
