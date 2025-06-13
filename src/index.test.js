@@ -89,3 +89,37 @@ test('check ship stacking restriction vertically', () => {
         board.placeShip('destroyer', [0, 3], [3, 3])
     }).toThrow('Ships may not be stacked');
 });
+
+test('check shots fired hits', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    board.placeShip('battleship', [1, 0], [1, 4]);
+    board.receiveAttack(['A', 1]);
+    expect(board.shotsFired[1, 0]).toBe('hit');
+});
+
+test('check shots fired misses', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    board.placeShip('battleship', [1, 0], [1, 4]);
+    board.receiveAttack(['A', 9]);
+    expect(board.shotsFired[9, 0]).toBe('miss');
+});
+
+test('check shots fired for square not yet shot', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    board.placeShip('battleship', [1, 0], [1, 4]);
+    board.receiveAttack(['A', 1]);
+    expect(board.shotsFired[9, 9]).toBe(undefined);
+});
+
+test('check shots fired on same square again', () => {
+    const board = new Gameboard();
+    const battleship = new Ship(5);
+    board.placeShip('battleship', [1, 0], [1, 4]);
+    board.receiveAttack(['A', 1]);
+    expect(()=>{
+        board.receiveAttack(['A', 1])
+    }).toThrow('That square has already been fired upon');
+});

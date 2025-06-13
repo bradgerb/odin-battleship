@@ -22,7 +22,7 @@ class Gameboard {
         this.rows = 10;
         this.columns = 10;
         this.board = [];
-
+        this.shotsFired = {}
         for (let i = 0; i < this.rows; i++) {
             this.board[i] = new Array(this.columns).fill(null)
         }
@@ -84,11 +84,18 @@ class Gameboard {
     receiveAttack([letter, rowNumber]) {
         if(this.#checkValidAttack(letter, rowNumber)) {
             let coordinate = [rowNumber, this.#letterToCoordinate(letter)];
+            
+            if(this.board[rowNumber][this.#letterToCoordinate(letter)] != null) {
+                this.shotsFired[rowNumber, this.#letterToCoordinate(letter)] = 'hit';
+                this.board[rowNumber][this.#letterToCoordinate(letter)].hit();
+            } else {
+                this.shotsFired[rowNumber, this.#letterToCoordinate(letter)] = 'miss';
+            }
             return coordinate
         }
     }
 
-    #checkValidAttack([letter, rowNumber]) {
+    #checkValidAttack(letter, rowNumber) {
         let validLetters = 'abcdefghij'
 
         if(letter.length != 1) {
@@ -99,6 +106,9 @@ class Gameboard {
         }
         if(rowNumber < 0 || rowNumber > this.rows) {
             throw new Error('Number must be within bounds');
+        }
+        if(this.shotsFired[rowNumber, this.#letterToCoordinate(letter)]) {
+            throw new Error('That square has already been fired upon');
         }
         return true
     }
