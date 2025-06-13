@@ -58,6 +58,8 @@ test('check that hits register for only ship that was hit', () => {
 
 test('check receive attack coordinates', () => {
     const board = new Gameboard();
+    const battleship = new Ship(5);
+    board.placeShip('battleship', [1, 0], [1, 4]);
     expect(board.receiveAttack(['A', 1])).toEqual([1, 0]);
 });
 
