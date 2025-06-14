@@ -132,5 +132,23 @@ class Gameboard {
     }
 }
 
+class Player {
+    constructor(name, controlType) {
+        this.name = name;
+        this.board = new Gameboard;
+        this.score = 0;
+        this.controlType = controlType;
+    }
+
+    rename(newName) {
+        this.name = newName;
+    }
+
+    win() {
+        this.score++;
+        return this.score
+    }
+}
+
 // eslint-disable-next-line no-undef
-module.exports = { Ship, Gameboard }
+module.exports = { Ship, Gameboard, Player }

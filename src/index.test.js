@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-const { Ship, Gameboard } = require('./index');
+const { Ship, Gameboard, Player } = require('./index');
 
 test('constructor should set ship length', () => {
     const battleship = new Ship(5);
@@ -154,4 +154,34 @@ test('check all sunk when true', () => {
     board.receiveAttack(['C', 1]);
     board.receiveAttack(['D', 1]);
     expect(board.allSunk()).toBe(true);
+});
+
+test('Player class name working', () => {
+    const humanPlayer = new Player('Bob', 'human');
+    expect(humanPlayer.name).toBe('Bob');
+});
+
+test('Player class controlType working', () => {
+    const humanPlayer = new Player('Bob', 'human');
+    expect(humanPlayer.controlType).toBe('human');
+});
+
+test('Player class rename working', () => {
+    const humanPlayer = new Player('Bob', 'human');
+    humanPlayer.rename('Not Bob')
+    expect(humanPlayer.name).toBe('Not Bob');
+});
+
+test('Player class score working', () => {
+    const humanPlayer = new Player('Bob', 'human');
+    humanPlayer.win();
+    expect(humanPlayer.score).toBe(1);
+});
+
+test('Player class board working', () => {
+    const humanPlayer = new Player('Bob', 'human');
+    const battleship = new Ship(5);
+    humanPlayer.board.placeShip('battleship', [0, 0], [0, 4]);
+    humanPlayer.board.board[0][3].hit();
+    expect(humanPlayer.board.board[0][3].hits).toBe(1);
 });
