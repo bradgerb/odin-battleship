@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+    background-color: lightblue;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    font-weight: bolder;
+    font-family: sans-serif;
+    color: red;
+}

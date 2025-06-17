@@ -1,3 +1,5 @@
+import "./style.css";
+
 class Ship {
     constructor(length) {
         this.length = length;
