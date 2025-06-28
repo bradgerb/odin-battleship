@@ -3,12 +3,49 @@ body {
     background-color: lightblue;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .title {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: xx-large;
+    padding: 25px;
+    font-size: 3em;
     font-weight: bolder;
     font-family: sans-serif;
     color: red;
+    background-color: navy;
+}
+
+.boardContainer {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(11, 40px);
+    grid-template-rows: repeat(11, 40px);
+    border: 2px solid black;
+    background-color: black;
+    gap: 2px;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.controls {
+    display: flex;
+    color: white;
+    background-color: navy;
 }
