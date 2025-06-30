@@ -10,7 +10,15 @@ const createBoard = (board)=> {
         for(let j = 0; j < 11; j++) {
             const cell = document.createElement('div');
             cell.classList.add('cell');
-            cell.textContent = `i: ${i}; j:${j}`;
+
+            if (i === 0 && j != 0) {
+                cell.textContent = `${String.fromCharCode(j + 64)}`;
+            } else if (i != 0 && j === 0) {
+                cell.textContent = `${i}`;
+            } else if (i != 0 && j != 0) {
+                cell.textContent = `i: ${i}; j:${j}`;
+            }
+
             board.appendChild(cell);
         }
     }
