@@ -46,6 +46,8 @@ body {
 
 .controls {
     display: flex;
+    padding: 25px;
+    justify-content: space-around;
     color: white;
     background-color: navy;
 }
