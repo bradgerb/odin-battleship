@@ -11,12 +11,20 @@ const createBoard = (board)=> {
             const cell = document.createElement('div');
             cell.classList.add('cell');
 
+            let boardNumber = 0;
+
+            if (board.classList.contains('one')) {
+                boardNumber = 1;
+            } else {
+                boardNumber = 2;
+            }
+
             if (i === 0 && j != 0) {
                 cell.textContent = `${String.fromCharCode(j + 64)}`;
             } else if (i != 0 && j === 0) {
                 cell.textContent = `${i}`;
             } else if (i != 0 && j != 0) {
-                cell.textContent = `i: ${i}; j:${j}`;
+                cell.setAttribute('id', `${String.fromCharCode(j + 64)}${i}${boardNumber}`);
             }
 
             board.appendChild(cell);
