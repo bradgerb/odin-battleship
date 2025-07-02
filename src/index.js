@@ -1,4 +1,4 @@
 import './style.css';
-import { helloWorld } from './DOM.js';
+import { gameController } from './DOM.js';
 
-helloWorld();
+gameController();

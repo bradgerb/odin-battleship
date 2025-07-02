@@ -133,11 +133,12 @@ class Gameboard {
 }
 
 class Player {
-    constructor(name, controlType) {
+    constructor(name, controlType, number) {
         this.name = name;
         this.board = new Gameboard;
         this.score = 0;
         this.controlType = controlType;
+        this.number = number;
     }
 
     rename(newName) {

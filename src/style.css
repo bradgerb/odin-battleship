@@ -51,3 +51,7 @@ body {
     color: white;
     background-color: navy;
 }
+
+.containsShip {
+    background-color: lightgreen;
+}
