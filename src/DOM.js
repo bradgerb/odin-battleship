@@ -38,9 +38,19 @@ const gameController = ()=> {
     const playerTwo = new Player('Not Bob', 'ai', 2);
 
     //ship placement
-    placeNewShip(playerOne, 'battleship', [0, 0], [0, 4]);
-    placeNewShip(playerTwo, 'battleship', [1, 0], [1, 4]);
-    console.log(playerOne);
+    placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
+    placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
+    placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
+    placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
+    placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
+
+    placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
+    placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
+    placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
+    placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
+    placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+
+    //game logic
 }
 
 const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, columnEnd])=> {
