@@ -75,6 +75,7 @@ const gameController = ()=> {
 
         if (boardAttacked != currentPlayer) {
             playerBoard.board.receiveAttack([letter, number]);
+            shotsFiredBoardUpdate(playerBoard, letter, number);
             switchPlayer();
             console.log(playerOne);
             console.log(playerTwo);
@@ -86,6 +87,21 @@ const gameController = ()=> {
             currentPlayer = 2;
         } else {
             currentPlayer = 1;
+        }
+    }
+
+    const shotsFiredBoardUpdate = (board, letter, number)=> {
+        let cellID = `${board.number}${letter}${number + 1}`
+        let shotsFiredHash = (number * 10) + letter.toLowerCase().charCodeAt(0) - 97
+        const activeCell = document.getElementById(`${cellID}`);
+        const display = document.querySelector('.textDisplay');
+
+        if(board.board.shotsFired[shotsFiredHash] === 'hit') {
+            activeCell.classList.add('hitCell');
+            display.textContent = 'You hit!'
+        } else {
+            activeCell.classList.add('missedCell');
+            display.textContent = 'You missed.'
         }
     }
 }

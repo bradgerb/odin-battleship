@@ -66,3 +66,11 @@ body {
 .containsShip {
     background-color: lightgreen;
 }
+
+.hitCell {
+    background-color: lightpink;
+}
+
+.missedCell {
+    background-color: lightcyan;
+}
