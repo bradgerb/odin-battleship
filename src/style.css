@@ -44,6 +44,17 @@ body {
     background-color: white;
 }
 
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.textDisplay {
+    display: flex;
+    justify-content: center;
+}
+
 .controls {
     display: flex;
     padding: 25px;

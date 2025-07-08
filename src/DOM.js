@@ -51,6 +51,43 @@ const gameController = ()=> {
     placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
 
     //game logic
+    const allCells = document.querySelectorAll('.cell')
+    for (let i = 0; i < allCells.length; i++) {
+        allCells[i].addEventListener('click', ()=> {
+            playTurn(allCells[i].id);
+        });
+    }
+
+    let currentPlayer = 1;
+    let playerBoard;
+
+    const playTurn = (id)=> {
+        let boardAttacked = parseInt(id.charAt(0));
+        let cell = id.slice(1);
+        let letter = cell.charAt(0);
+        let number = parseInt(cell.slice(1)) - 1;
+
+        if (boardAttacked === 1) {
+            playerBoard = playerOne;
+        } else {
+            playerBoard = playerTwo;
+        }
+
+        if (boardAttacked != currentPlayer) {
+            playerBoard.board.receiveAttack([letter, number]);
+            switchPlayer();
+            console.log(playerOne);
+            console.log(playerTwo);
+        }
+    }
+
+    const switchPlayer = ()=> {
+        if (currentPlayer === 1) {
+            currentPlayer = 2;
+        } else {
+            currentPlayer = 1;
+        }
+    }
 }
 
 const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, columnEnd])=> {
