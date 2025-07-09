@@ -74,9 +74,10 @@ const gameController = ()=> {
         }
 
         if (boardAttacked != currentPlayer) {
-            playerBoard.board.receiveAttack([letter, number]);
-            shotsFiredBoardUpdate(playerBoard, letter, number);
-            switchPlayer();
+            if (playerBoard.board.receiveAttack([letter, number])) {
+                shotsFiredBoardUpdate(playerBoard, letter, number);
+                switchPlayer();
+            }
         }
     }
 

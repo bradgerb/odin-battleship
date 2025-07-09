@@ -59,6 +59,7 @@ class Gameboard {
         } catch ({name, message}) {
             console.log(name);
             console.log(message);
+            return false
         }
     }
 
@@ -103,6 +104,7 @@ class Gameboard {
         } catch ({name, message}) {
             console.log(name);
             console.log(message);
+            return false
         }
     }
 
