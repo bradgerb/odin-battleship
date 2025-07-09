@@ -60,28 +60,49 @@ const gameController = ()=> {
 
     let currentPlayer = 1;
     let playerBoard;
+    let turnsEnabled = true;
 
     const playTurn = (id)=> {
-        let boardAttacked = parseInt(id.charAt(0));
-        let cell = id.slice(1);
-        let letter = cell.charAt(0);
-        let number = parseInt(cell.slice(1)) - 1;
+        if(turnsEnabled) {
+            let boardAttacked = parseInt(id.charAt(0));
+            let cell = id.slice(1);
+            let letter = cell.charAt(0);
+            let number = parseInt(cell.slice(1)) - 1;
 
-        if (boardAttacked === 1) {
-            playerBoard = playerOne;
-        } else {
-            playerBoard = playerTwo;
-        }
+            if (boardAttacked === 1) {
+                playerBoard = playerOne;
+            } else {
+                playerBoard = playerTwo;
+            }
 
-        if (boardAttacked != currentPlayer) {
-            if (playerBoard.board.receiveAttack([letter, number])) {
-                shotsFiredBoardUpdate(playerBoard, letter, number);
+            if (boardAttacked != currentPlayer) {
+                if (playerBoard.board.receiveAttack([letter, number])) {
+                    shotsFiredBoardUpdate(playerBoard, letter, number);
 
-                if (playerBoard.board.allSunk()) {
-                    playerBoard.board.win();
+                    if (playerBoard.board.allSunk()) {
+                        playerBoard.win();
+
+                        let scoreText;
+                        let playerOneMessage = document.querySelector('.playerOneMessage');
+                        let playerTwoMessage = document.querySelector('.playerTwoMessage');
+
+                        if (currentPlayer === 1) {
+                            scoreText = document.querySelector('.playerOneScore');
+                            scoreText.textContent = `Player 1 score: ${playerBoard.score}`
+                            playerOneMessage.textContent = 'You win!';
+                            playerTwoMessage.textContent = 'You lose';
+                        } else {
+                            scoreText = document.querySelector('.playerTwoScore');
+                            scoreText.textContent = `Player 2 score: ${playerBoard.score}`
+                            playerOneMessage.textContent = 'You lose';
+                            playerTwoMessage.textContent = 'You win!';
+                        }
+
+                        turnsEnabled = false;
+                    }
+
+                    switchPlayer();
                 }
-
-                switchPlayer();
             }
         }
     }
