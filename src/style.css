@@ -84,5 +84,6 @@ body {
 }
 
 .missedCell {
-    background-color: lightcyan;
+    /* between cyan and light cyan */
+    background-color: rgb(150, 255, 255);
 }
