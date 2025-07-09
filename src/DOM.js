@@ -78,11 +78,7 @@ const gameController = ()=> {
                 shotsFiredBoardUpdate(playerBoard, letter, number);
 
                 if (playerBoard.board.allSunk()) {
-                    if (currentPlayer === 1) {
-                        console.log('Player 1 wins!')
-                    } else {
-                        console.log('Player 2 wins!')
-                    }
+                    playerBoard.board.win();
                 }
 
                 switchPlayer();
@@ -102,7 +98,14 @@ const gameController = ()=> {
         let cellID = `${board.number}${letter}${number + 1}`
         let shotsFiredHash = (number * 10) + letter.toLowerCase().charCodeAt(0) - 97
         const activeCell = document.getElementById(`${cellID}`);
-        const display = document.querySelector('.textDisplay');
+        let display;
+
+        if (board.number === 2) {
+            display = document.querySelector('.playerOneMessage');
+        } else {
+            display = document.querySelector('.playerTwoMessage');
+        }
+        
 
         if(board.board.shotsFired[shotsFiredHash] === 'hit') {
             activeCell.classList.add('hitCell');
