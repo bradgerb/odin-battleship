@@ -9,15 +9,26 @@ body {
     height: 100vh;
 }
 
-.title {
+.titleBar {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     padding: 25px;
+    background-color: navy;
+}
+
+.title {
     font-size: 3em;
     font-weight: bolder;
     font-family: sans-serif;
     color: red;
+}
+
+button {
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 30px;
+    color: white;
     background-color: navy;
 }
 
@@ -60,11 +71,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.textDisplay {
-    display: flex;
-    justify-content: center;
 }
 
 .footer {
