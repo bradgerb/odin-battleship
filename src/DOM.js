@@ -76,6 +76,15 @@ const gameController = ()=> {
         if (boardAttacked != currentPlayer) {
             if (playerBoard.board.receiveAttack([letter, number])) {
                 shotsFiredBoardUpdate(playerBoard, letter, number);
+
+                if (playerBoard.board.allSunk()) {
+                    if (currentPlayer === 1) {
+                        console.log('Player 1 wins!')
+                    } else {
+                        console.log('Player 2 wins!')
+                    }
+                }
+
                 switchPlayer();
             }
         }
