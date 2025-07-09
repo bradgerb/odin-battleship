@@ -33,7 +33,7 @@ class Gameboard {
         let shipLength = 0;
         let orientation = 'none';
         
-        if(this.#checkValidPlacement([rowStart, columnStart], [rowEnd, columnEnd])){            
+        try {(this.#checkValidPlacement([rowStart, columnStart], [rowEnd, columnEnd]))            
             if (rowStart === rowEnd) {
                 orientation = 'horizontal';
                 shipLength = Math.abs(columnEnd - columnStart) + 1;
@@ -56,6 +56,9 @@ class Gameboard {
 
                 }
             }
+        } catch ({name, message}) {
+            console.log(name);
+            console.log(message);
         }
     }
 
@@ -86,7 +89,7 @@ class Gameboard {
     }
 
     receiveAttack([letter, rowNumber]) {
-        if(this.#checkValidAttack(letter, rowNumber)) {
+        try {(this.#checkValidAttack(letter, rowNumber))
             let coordinate = [rowNumber, this.#letterToCoordinate(letter)];
             
             if(this.board[rowNumber][this.#letterToCoordinate(letter)] != null) {
@@ -97,6 +100,9 @@ class Gameboard {
                 this.shotsFired[(rowNumber * 10) + this.#letterToCoordinate(letter)] = 'miss';
             }
             return coordinate
+        } catch ({name, message}) {
+            console.log(name);
+            console.log(message);
         }
     }
 

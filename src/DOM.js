@@ -77,8 +77,6 @@ const gameController = ()=> {
             playerBoard.board.receiveAttack([letter, number]);
             shotsFiredBoardUpdate(playerBoard, letter, number);
             switchPlayer();
-            console.log(playerOne);
-            console.log(playerTwo);
         }
     }
 
