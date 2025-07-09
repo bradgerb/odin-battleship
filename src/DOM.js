@@ -79,29 +79,12 @@ const gameController = ()=> {
                 if (playerBoard.board.receiveAttack([letter, number])) {
                     shotsFiredBoardUpdate(playerBoard, letter, number);
 
-                    if (playerBoard.board.allSunk()) {
-                        playerBoard.win();
-
-                        let scoreText;
-                        let playerOneMessage = document.querySelector('.playerOneMessage');
-                        let playerTwoMessage = document.querySelector('.playerTwoMessage');
-
-                        if (currentPlayer === 1) {
-                            scoreText = document.querySelector('.playerOneScore');
-                            scoreText.textContent = `Player 1 score: ${playerBoard.score}`
-                            playerOneMessage.textContent = 'You win!';
-                            playerTwoMessage.textContent = 'You lose';
-                        } else {
-                            scoreText = document.querySelector('.playerTwoScore');
-                            scoreText.textContent = `Player 2 score: ${playerBoard.score}`
-                            playerOneMessage.textContent = 'You lose';
-                            playerTwoMessage.textContent = 'You win!';
-                        }
-
-                        turnsEnabled = false;
-                    }
-
+                    allSunkCheck();
                     switchPlayer();
+
+                    if (playerBoard.controlType === 'ai') {
+                        playComputerTurn();
+                    }
                 }
             }
         }
@@ -136,6 +119,54 @@ const gameController = ()=> {
             display.textContent = 'You missed.'
         }
     }
+
+    const allSunkCheck = ()=> {
+        let scoreText;
+        let playerOneMessage = document.querySelector('.playerOneMessage');
+        let playerTwoMessage = document.querySelector('.playerTwoMessage');
+
+        if (currentPlayer === 1) {
+            if (playerTwo.board.allSunk()) {
+                playerOne.win();
+                scoreText = document.querySelector('.playerOneScore');
+                scoreText.textContent = `Player 1 score: ${playerOne.score}`
+                playerOneMessage.textContent = 'You win!';
+                playerTwoMessage.textContent = 'You lose';
+                turnsEnabled = false;
+            }
+        } else {
+            if (playerOne.board.allSunk()) {
+                playerTwo.win();
+                scoreText = document.querySelector('.playerTwoScore');
+                scoreText.textContent = `Player 2 score: ${playerTwo.score}`
+                playerOneMessage.textContent = 'You lose';
+                playerTwoMessage.textContent = 'You win!';
+                turnsEnabled = false;
+            }
+        }
+    }
+
+    const playComputerTurn = ()=> {
+        if (turnsEnabled) {
+            let row = Math.floor(Math.random() * 10);
+            let column = Math.floor(Math.random() * 10);
+            let hash = (row * 10) + column;
+
+            while (playerOne.board.shotsFired[hash]) {
+                row = Math.floor(Math.random() * 10);
+                column = Math.floor(Math.random() * 10);
+                hash = (row * 10) + column;
+            }
+            
+            let letter = letterFromCoordinate(column);
+
+            playerOne.board.receiveAttack([letter, row]);
+            shotsFiredBoardUpdate(playerOne, letter, row);
+
+            allSunkCheck();
+            switchPlayer();
+        }
+    }
 }
 
 const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, columnEnd])=> {
@@ -161,6 +192,10 @@ const coordinateToHash = (coordinate)=> {
     let hash = `${column}${row + 1}`
 
     return hash
+}
+
+const letterFromCoordinate = (coordinate)=> {
+    return String.fromCharCode(coordinate + 65);
 }
 
 createBoard(playerOneBoard);
