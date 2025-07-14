@@ -176,12 +176,16 @@ const gameController = ()=> {
     const newGame = ()=> {
         emptyPlayerMemory(playerOne);
         emptyPlayerMemory(playerTwo);
+        emptyPlayerMessage();
         placeAllShips();
+        turnsEnabled = true;
+        currentPlayer = 1;
     }
 
     const resetGame = ()=> {
         playerOne.resetScore();
         playerTwo.resetScore();
+        scoreUpdate();
         newGame();
     }
 
@@ -214,6 +218,22 @@ const gameController = ()=> {
             allCells[i].classList.remove('hitCell');
             allCells[i].classList.remove('missedCell');   
         }
+    }
+
+    const emptyPlayerMessage = ()=> {
+        const playerOneDisplay = document.querySelector('.playerOneMessage');
+        const playerTwoDisplay = document.querySelector('.playerTwoMessage');
+
+        playerOneDisplay.textContent = '\u00A0';
+        playerTwoDisplay.textContent = '\u00A0';
+    }
+
+    const scoreUpdate = ()=> {
+        let playerOneScoreText = document.querySelector('.playerOneScore');
+        let playerTwoScoreText = document.querySelector('.playerTwoScore');
+
+        playerOneScoreText.textContent = `Player 1 score: ${playerOne.score}`
+        playerTwoScoreText.textContent = `Player 2 score: ${playerTwo.score}`
     }
 
     newGameButton.addEventListener('click', newGame);
