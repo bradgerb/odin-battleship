@@ -2,6 +2,8 @@ import { Player } from './player.js';
 
 const playerOneBoard = document.querySelector('.one');
 const playerTwoBoard = document.querySelector('.two');
+const newGameButton = document.querySelector('.newGame');
+const resetGameButton = document.querySelector('.resetGame');
 
 const createBoard = (board)=> {
     for(let i = 0; i < 11; i++) {
@@ -38,17 +40,20 @@ const gameController = ()=> {
     const playerTwo = new Player('Not Bob', 'ai', 2);
 
     //ship placement
-    placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
-    placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
-    placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
-    placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
-    placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
+    const placeAllShips = ()=> {
+        placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
+        placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
+        placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
+        placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
+        placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
 
-    placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
-    placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
-    placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
-    placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
-    placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+        placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
+        placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
+        placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
+        placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
+        placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+    }
+    placeAllShips();
 
     //game logic
     const allCells = document.querySelectorAll('.cell')
@@ -167,6 +172,52 @@ const gameController = ()=> {
             switchPlayer();
         }
     }
+
+    const newGame = ()=> {
+        emptyPlayerMemory(playerOne);
+        emptyPlayerMemory(playerTwo);
+        placeAllShips();
+    }
+
+    const resetGame = ()=> {
+        playerOne.resetScore();
+        playerTwo.resetScore();
+        newGame();
+    }
+
+    const emptyPlayerMemory = (player)=> {
+        emptyBoard(player);
+        emptyShotsFired(player);
+        emptyShipsOnBoard(player);
+        emptyCellColors();
+    }
+
+    const emptyBoard = (player)=> {
+        for (let i = 0; i < 10; i++) {
+            for (let j = 0; j < 10; j++) {
+                player.board.board[i][j] = null;
+            }
+        }
+    }
+
+    const emptyShotsFired = (player)=> {
+        player.board.shotsFired = {};
+    }
+
+    const emptyShipsOnBoard = (player)=> {
+        player.board.shipsOnBoard.length = 0;
+    }
+
+    const emptyCellColors = ()=> {
+        for (let i = 0; i < allCells.length; i++) {
+            allCells[i].classList.remove('containsShip');
+            allCells[i].classList.remove('hitCell');
+            allCells[i].classList.remove('missedCell');   
+        }
+    }
+
+    newGameButton.addEventListener('click', newGame);
+    resetGameButton.addEventListener('click', resetGame);
 }
 
 const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, columnEnd])=> {

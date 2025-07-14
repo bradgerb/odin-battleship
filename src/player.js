@@ -157,6 +157,10 @@ class Player {
         this.score++;
         return this.score
     }
+
+    resetScore() {
+        this.score = 0;
+    }
 }
 
 // eslint-disable-next-line no-undef
