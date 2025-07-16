@@ -62,12 +62,15 @@ const gameController = ()=> {
         function runShipPlacement() {
             shipsPlaced++;
             console.log(shipsPlaced);
+            console.log(shipyard);
             checkEndShipPlacement();
         }
 
         for (let i = 0; i < allCells.length; i++) {
             allCells[i].addEventListener('click', runShipPlacement);
         }
+
+            let shipyard = {carrier: 5, battleship: 4, destroyer: 3, submarine: 3, patrolBoat: 2}
 
             placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
             placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
@@ -245,7 +248,8 @@ const gameController = ()=> {
         for (let i = 0; i < allCells.length; i++) {
             allCells[i].classList.remove('containsShip');
             allCells[i].classList.remove('hitCell');
-            allCells[i].classList.remove('missedCell');   
+            allCells[i].classList.remove('missedCell');
+            allCells[i].classList.remove('hidden');
         }
     }
 
@@ -281,6 +285,10 @@ const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, column
 
                 const targetCell = document.getElementById(cellHash);
                 targetCell.classList.add('containsShip');
+
+                if (player.controlType === 'ai') {
+                    targetCell.classList.add('hidden');
+                };
             }
         }
     }

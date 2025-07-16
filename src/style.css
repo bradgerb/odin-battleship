@@ -85,6 +85,10 @@ button {
     background-color: lightgreen;
 }
 
+.hidden {
+    background-color: white;
+}
+
 .hitCell {
     background-color: lightpink;
 }
