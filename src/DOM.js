@@ -35,38 +35,68 @@ const createBoard = (board)=> {
 
 const gameController = ()=> {
 
+    //controller variables
+    let currentPlayer = 1;
+    let playerBoard;
+    let turnsEnabled = true;
+    const allCells = document.querySelectorAll('.cell')
+
     //player creation
     const playerOne = new Player('Bob', 'human', 1);
     const playerTwo = new Player('Not Bob', 'ai', 2);
 
+    //game logic
+    const startGame = ()=> {
+        for (let i = 0; i < allCells.length; i++) {
+            allCells[i].addEventListener('click', ()=> {
+                playTurn(allCells[i].id);
+            });
+        }     
+    }
+
     //ship placement
     const placeAllShips = ()=> {
-        placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
-        placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
-        placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
-        placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
-        placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
+        turnsEnabled = false;
+        let shipsPlaced = 0;
 
-        placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
-        placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
-        placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
-        placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
-        placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+        function runShipPlacement() {
+            shipsPlaced++;
+            console.log(shipsPlaced);
+            checkEndShipPlacement();
+        }
+
+        for (let i = 0; i < allCells.length; i++) {
+            allCells[i].addEventListener('click', runShipPlacement);
+        }
+
+            placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
+            placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
+            placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
+            placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
+            placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
+
+            placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
+            placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
+            placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
+            placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
+            placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+
+        //end ship placement
+        const checkEndShipPlacement = ()=> {
+            if (shipsPlaced === 10) {
+                for (let i = 0; i < allCells.length; i++) {
+                    allCells[i].removeEventListener('click', runShipPlacement);
+                }
+
+                turnsEnabled = true;
+                startGame();
+            }
+        }
     }
+
     placeAllShips();
 
     //game logic
-    const allCells = document.querySelectorAll('.cell')
-    for (let i = 0; i < allCells.length; i++) {
-        allCells[i].addEventListener('click', ()=> {
-            playTurn(allCells[i].id);
-        });
-    }
-
-    let currentPlayer = 1;
-    let playerBoard;
-    let turnsEnabled = true;
-
     const playTurn = (id)=> {
         if(turnsEnabled) {
             let boardAttacked = parseInt(id.charAt(0));
@@ -178,7 +208,6 @@ const gameController = ()=> {
         emptyPlayerMemory(playerTwo);
         emptyPlayerMessage();
         placeAllShips();
-        turnsEnabled = true;
         currentPlayer = 1;
     }
 
