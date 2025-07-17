@@ -58,11 +58,27 @@ const gameController = ()=> {
     const placeAllShips = ()=> {
         turnsEnabled = false;
         let shipsPlaced = 0;
+        let shipStart = [];
+        let shipEnd = [];
 
-        function runShipPlacement() {
+        function runShipPlacement(e) {
+
+            let board = parseInt(e.target.id.charAt(0));
+            let letter = e.target.id.charAt(1);
+            let number = parseInt(e.target.id.slice(2));
+
+            if (board === currentPlayer) {
+                if (shipStart.length === 0) {
+                    shipStart = [letter, number];
+                } else {
+                    shipEnd = [letter, number];
+                }
+            }
+
+            console.log(shipStart);
+            console.log(shipEnd);
+
             shipsPlaced++;
-            console.log(shipsPlaced);
-            console.log(shipyard);
             checkEndShipPlacement();
         }
 
@@ -70,7 +86,7 @@ const gameController = ()=> {
             allCells[i].addEventListener('click', runShipPlacement);
         }
 
-            let shipyard = {carrier: 5, battleship: 4, destroyer: 3, submarine: 3, patrolBoat: 2}
+            // let shipyard = {carrier: 5, battleship: 4, destroyer: 3, submarine: 3, patrolBoat: 2}
 
             placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
             placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
