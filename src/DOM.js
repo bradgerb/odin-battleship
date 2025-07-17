@@ -89,13 +89,14 @@ const gameController = ()=> {
                     shipStart.length = 0;
                     shipEnd.length = 0;
                     shipsPlaced++
+                } else {
+                    shipStart.length = 0;
+                    shipEnd.length = 0;                    
                 }
             }
 
-
             console.log(shipsPlaced);
 
-            // shipsPlaced++;
             checkEndShipPlacement();
         }
 
