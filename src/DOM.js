@@ -65,20 +65,37 @@ const gameController = ()=> {
 
             let board = parseInt(e.target.id.charAt(0));
             let letter = e.target.id.charAt(1);
-            let number = parseInt(e.target.id.slice(2));
+            let number = parseInt(e.target.id.slice(2)) - 1;
+            let player;
+
+            if (currentPlayer === 1) {
+                player = playerOne;
+            } else {
+                player = playerTwo;
+            }
 
             if (board === currentPlayer) {
                 if (shipStart.length === 0) {
-                    shipStart = [letter, number];
+                    shipStart = [number, coordinateFromLetter(letter)];
                 } else {
-                    shipEnd = [letter, number];
+                    shipEnd = [number, coordinateFromLetter(letter)];
                 }
             }
 
-            console.log(shipStart);
-            console.log(shipEnd);
+            if (shipEnd.length != 0) {
+                if (placeNewShip(player, 'carrier', shipStart, shipEnd)) {
+                    console.log(shipStart);
+                    console.log(shipEnd);
+                    shipStart.length = 0;
+                    shipEnd.length = 0;
+                    shipsPlaced++
+                }
+            }
 
-            shipsPlaced++;
+
+            console.log(shipsPlaced);
+
+            // shipsPlaced++;
             checkEndShipPlacement();
         }
 
@@ -88,11 +105,11 @@ const gameController = ()=> {
 
             // let shipyard = {carrier: 5, battleship: 4, destroyer: 3, submarine: 3, patrolBoat: 2}
 
-            placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
-            placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
-            placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
-            placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
-            placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
+            // placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
+            // placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
+            // placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
+            // placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
+            // placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
 
             placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
             placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
@@ -290,7 +307,14 @@ const gameController = ()=> {
 }
 
 const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, columnEnd])=> {
-    player.board.placeShip(shipName, [rowStart, columnStart], [rowEnd, columnEnd]);
+
+    let returnFlag;
+
+    if (player.board.placeShip(shipName, [rowStart, columnStart], [rowEnd, columnEnd])) {
+        returnFlag = true;
+    } else {
+        returnFlag = false;
+    }
 
     for(let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
@@ -308,6 +332,7 @@ const placeNewShip = (player, shipName, [rowStart, columnStart], [rowEnd, column
             }
         }
     }
+    return returnFlag
 }
 
 const coordinateToHash = (coordinate)=> {
@@ -320,6 +345,10 @@ const coordinateToHash = (coordinate)=> {
 
 const letterFromCoordinate = (coordinate)=> {
     return String.fromCharCode(coordinate + 65);
+}
+
+const coordinateFromLetter = (letter)=> {
+    return letter.charCodeAt(0) - 65;
 }
 
 createBoard(playerOneBoard);

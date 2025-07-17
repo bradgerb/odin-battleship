@@ -32,6 +32,15 @@ class Gameboard {
     placeShip(name, [rowStart, columnStart], [rowEnd, columnEnd]) {
         let shipLength = 0;
         let orientation = 'none';
+        let placeholderRowStart = Math.min(rowStart, rowEnd);
+        let placeholderRowEnd = Math.max(rowStart, rowEnd);
+        let placeholderColumnStart = Math.min(columnStart, columnEnd);
+        let placeholderColumnEnd = Math.max(columnStart, columnEnd);
+
+        rowStart = placeholderRowStart;
+        rowEnd = placeholderRowEnd;
+        columnStart = placeholderColumnStart;
+        columnEnd = placeholderColumnEnd;
         
         try {(this.#checkValidPlacement([rowStart, columnStart], [rowEnd, columnEnd]))            
             if (rowStart === rowEnd) {
@@ -53,9 +62,9 @@ class Gameboard {
                 for (let i = 0; i < shipLength; i++) {
                     this.board[rowStart + i][columnStart] = name;
                     this.shipsOnBoard.push(name);
-
                 }
             }
+            return shipLength
         } catch ({name, message}) {
             console.log(name);
             console.log(message);
