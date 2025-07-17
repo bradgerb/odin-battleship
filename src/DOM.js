@@ -84,18 +84,12 @@ const gameController = ()=> {
 
             if (shipEnd.length != 0) {
                 if (placeNewShip(player, 'carrier', shipStart, shipEnd)) {
-                    console.log(shipStart);
-                    console.log(shipEnd);
-                    shipStart.length = 0;
-                    shipEnd.length = 0;
                     shipsPlaced++
-                } else {
-                    shipStart.length = 0;
-                    shipEnd.length = 0;                    
                 }
-            }
 
-            console.log(shipsPlaced);
+                shipStart.length = 0;
+                shipEnd.length = 0; 
+            }
 
             checkEndShipPlacement();
         }
