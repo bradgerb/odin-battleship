@@ -81,6 +81,10 @@ button {
     background-color: navy;
 }
 
+.shipPlacementAid {
+    background-color: lightyellow;
+}
+
 .containsShip {
     background-color: lightgreen;
 }

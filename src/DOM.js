@@ -39,7 +39,10 @@ const gameController = ()=> {
     let currentPlayer = 1;
     let playerBoard;
     let turnsEnabled = true;
-    const allCells = document.querySelectorAll('.cell')
+    const allCells = document.querySelectorAll('.cell');
+    let playerOneMessage = document.querySelector('.playerOneMessage');
+    let playerTwoMessage = document.querySelector('.playerTwoMessage');
+    let shipsPlaced = 0;
 
     //player creation
     const playerOne = new Player('Bob', 'human', 1);
@@ -57,16 +60,33 @@ const gameController = ()=> {
     //ship placement
     const placeAllShips = ()=> {
         turnsEnabled = false;
-        let shipsPlaced = 0;
         let shipStart = [];
         let shipEnd = [];
+
+        playerOneMessage.textContent = 'Please place the carrier, length 5'
 
         function runShipPlacement(e) {
 
             let board = parseInt(e.target.id.charAt(0));
             let letter = e.target.id.charAt(1);
             let number = parseInt(e.target.id.slice(2)) - 1;
+            let targetCell = document.getElementById(e.target.id);
             let player;
+
+            const checkShipLength = (shipStart, shipEnd)=> {
+                let shipStartRow = shipStart[0];
+                let shipStartColumn = shipStart[1];
+                let shipEndRow = shipEnd[0];
+                let shipEndColumn = shipEnd[1];
+                
+                if (shipStartRow === shipEndRow) {
+                    return Math.abs(shipEndColumn - shipStartColumn) + 1;
+                } else if (shipStartColumn === shipEndColumn) {
+                    return Math.abs(shipEndRow - shipStartRow) + 1;
+                } else {
+                    return false;
+                }
+            }
 
             if (currentPlayer === 1) {
                 player = playerOne;
@@ -77,18 +97,53 @@ const gameController = ()=> {
             if (board === currentPlayer) {
                 if (shipStart.length === 0) {
                     shipStart = [number, coordinateFromLetter(letter)];
+                    targetCell.classList.add('shipPlacementAid');
                 } else {
                     shipEnd = [number, coordinateFromLetter(letter)];
                 }
             }
 
             if (shipEnd.length != 0) {
-                if (placeNewShip(player, 'carrier', shipStart, shipEnd)) {
-                    shipsPlaced++
+
+                let shipLength = checkShipLength(shipStart, shipEnd);
+
+                if (shipLength === 5 && shipsPlaced === 0) {
+                    if (placeNewShip(player, 'carrier', shipStart, shipEnd)) {
+                        shipsPlaced++
+                        playerOneMessage.textContent = 'Please place the battleship, length 4';
+                    }
+                } else if(shipLength === 4 && shipsPlaced === 1) {
+                    if (placeNewShip(player, 'battleship', shipStart, shipEnd)) {
+                        shipsPlaced++
+                        playerOneMessage.textContent = 'Please place the destroyer, length 3';
+                    }
+                } else if (shipLength === 3 && shipsPlaced === 2) {
+                    if (placeNewShip(player, 'destroyer', shipStart, shipEnd)) {
+                        shipsPlaced++
+                        playerOneMessage.textContent = 'Please place the submarine, length 3';
+                    }
+                } else if(shipLength === 3 && shipsPlaced === 3) {
+                    if (placeNewShip(player, 'submarine', shipStart, shipEnd)) {
+                        shipsPlaced++
+                        playerOneMessage.textContent = 'Please place the patrol boat, length 2';
+                    }
+                } else if (shipLength === 2 && shipsPlaced === 4) {
+                    if (placeNewShip(player, 'patrol boat', shipStart, shipEnd)) {
+                        shipsPlaced++
+                        playerOneMessage.textContent = 'Placement complete';
+                    }
+                }
+            
+                shipStart.length = 0;
+                shipEnd.length = 0;
+
+                if (shipsPlaced === 5) {
+                    playerOneMessage.textContent = 'Placement complete';
                 }
 
-                shipStart.length = 0;
-                shipEnd.length = 0; 
+                for (let i = 0; i < allCells.length; i++) {
+                    allCells[i].classList.remove('shipPlacementAid');
+                }
             }
 
             checkEndShipPlacement();
@@ -114,12 +169,13 @@ const gameController = ()=> {
 
         //end ship placement
         const checkEndShipPlacement = ()=> {
-            if (shipsPlaced === 10) {
+            if (shipsPlaced === 5) {
                 for (let i = 0; i < allCells.length; i++) {
                     allCells[i].removeEventListener('click', runShipPlacement);
                 }
 
                 turnsEnabled = true;
+                shipsPlaced = 0;
                 startGame();
             }
         }
@@ -188,8 +244,6 @@ const gameController = ()=> {
 
     const allSunkCheck = ()=> {
         let scoreText;
-        let playerOneMessage = document.querySelector('.playerOneMessage');
-        let playerTwoMessage = document.querySelector('.playerTwoMessage');
 
         if (currentPlayer === 1) {
             if (playerTwo.board.allSunk()) {
@@ -240,6 +294,7 @@ const gameController = ()=> {
         emptyPlayerMessage();
         placeAllShips();
         currentPlayer = 1;
+        shipsPlaced = 0;
     }
 
     const resetGame = ()=> {
