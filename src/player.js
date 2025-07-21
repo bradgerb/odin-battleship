@@ -1,7 +1,8 @@
 class Ship {
-    constructor(length) {
+    constructor(length, shipName) {
         this.length = length;
         this.hits = 0;
+        this.shipName = shipName;
     }
 
     hit() {
@@ -51,7 +52,7 @@ class Gameboard {
                 shipLength = Math.abs(rowEnd - rowStart) + 1;
             };
 
-            name = new Ship(shipLength);
+            name = new Ship(shipLength, name);
 
             if (orientation === 'horizontal') {
                 for (let i = 0; i < shipLength; i++) {

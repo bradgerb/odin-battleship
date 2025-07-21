@@ -167,6 +167,7 @@ const gameController = ()=> {
 
                             if (placeNewShip(playerTwo, 'patrol boat', aiShipStart, aiShipEnd)) {
                                 aiShipsPlaced++
+                                playerTwoMessage.textContent = 'Placement complete';
                             }
                             break
                     }
@@ -306,9 +307,13 @@ const gameController = ()=> {
         if(board.board.shotsFired[shotsFiredHash] === 'hit') {
             activeCell.classList.add('hitCell');
             display.textContent = 'You hit!'
+            console.log(board.board.board[number][letter.toLowerCase().charCodeAt(0) - 97]);
+            if (board.board.board[number][letter.toLowerCase().charCodeAt(0) - 97].isSunk()) {
+                display.textContent = `You sunk the ${board.board.board[number][letter.toLowerCase().charCodeAt(0) - 97].shipName}!`;
+            };
         } else {
             activeCell.classList.add('missedCell');
-            display.textContent = 'You missed.'
+            display.textContent = 'You missed.';
         }
     }
 
