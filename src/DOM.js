@@ -89,12 +89,88 @@ const gameController = ()=> {
             }
 
             const aiShipPlace = ()=> {
-                console.log('place ai ships now');
-                placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
-                placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
-                placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
-                placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
-                placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+
+                let aiShipsPlaced = 0;
+                let alignment = 0;
+                let rowColumnStart = 0;
+                let rowColumnEnd = 0;
+                let zeroToNine = 0;
+                let aiShipStart = [];
+                let aiShipEnd = [];
+                let length = 0;
+
+                const getRandAlignment = ()=> {
+                    return Math.floor(Math.random() * 2)
+                }
+
+                const getRandRowColumn = (length)=> {
+                    return Math.floor(Math.random() * (10 - length))
+                }
+
+                const aiShipPlaceLogic = (length) => {
+                    rowColumnStart = getRandRowColumn(length);
+                    rowColumnEnd = rowColumnStart + length - 1;
+                    zeroToNine = Math.floor(Math.random() * 9);
+                    alignment = getRandAlignment();
+
+                    if (alignment === 0) {
+                        aiShipStart[0] = zeroToNine;
+                        aiShipStart[1] = rowColumnStart;
+                        aiShipEnd[0] = zeroToNine;
+                        aiShipEnd[1] = rowColumnEnd;
+                    } else {
+                        aiShipStart[0] = rowColumnStart;
+                        aiShipStart[1] = zeroToNine;
+                        aiShipEnd[0] = rowColumnEnd;
+                        aiShipEnd[1] = zeroToNine;
+                    }
+                }
+
+                while (aiShipsPlaced < 5) {
+
+                    switch(aiShipsPlaced) {
+                        case 0:
+                            length = 5
+                            aiShipPlaceLogic(length);
+
+                            if (placeNewShip(playerTwo, 'carrier', aiShipStart, aiShipEnd)) {
+                                aiShipsPlaced++
+                            }
+                            break
+                        case 1:
+                            length = 4
+                            aiShipPlaceLogic(length);
+
+                            if (placeNewShip(playerTwo, 'battleship', aiShipStart, aiShipEnd)) {
+                                aiShipsPlaced++
+                            }
+                            break
+                        case 2:
+                            length = 3
+                            aiShipPlaceLogic(length);
+
+                            if (placeNewShip(playerTwo, 'destroyer', aiShipStart, aiShipEnd)) {
+                                aiShipsPlaced++
+                            }
+                            break
+                        case 3:
+                            length = 3
+                            aiShipPlaceLogic(length);
+
+                            if (placeNewShip(playerTwo, 'submarine', aiShipStart, aiShipEnd)) {
+                                aiShipsPlaced++
+                            }
+                            break
+                        case 4:
+                            length = 2
+                            aiShipPlaceLogic(length);
+
+                            if (placeNewShip(playerTwo, 'patrol boat', aiShipStart, aiShipEnd)) {
+                                aiShipsPlaced++
+                            }
+                            break
+                    }
+                }
             }
 
             if (currentPlayer === 1) {
