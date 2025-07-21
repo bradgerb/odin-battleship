@@ -88,6 +88,15 @@ const gameController = ()=> {
                 }
             }
 
+            const aiShipPlace = ()=> {
+                console.log('place ai ships now');
+                placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
+                placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
+                placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
+                placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
+                placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
+            }
+
             if (currentPlayer === 1) {
                 player = playerOne;
             } else {
@@ -131,15 +140,14 @@ const gameController = ()=> {
                     if (placeNewShip(player, 'patrol boat', shipStart, shipEnd)) {
                         shipsPlaced++
                         playerOneMessage.textContent = 'Placement complete';
+                        if (playerTwo.controlType === 'ai') {
+                            aiShipPlace();
+                        }
                     }
                 }
             
                 shipStart.length = 0;
                 shipEnd.length = 0;
-
-                if (shipsPlaced === 5) {
-                    playerOneMessage.textContent = 'Placement complete';
-                }
 
                 for (let i = 0; i < allCells.length; i++) {
                     allCells[i].classList.remove('shipPlacementAid');
@@ -152,20 +160,6 @@ const gameController = ()=> {
         for (let i = 0; i < allCells.length; i++) {
             allCells[i].addEventListener('click', runShipPlacement);
         }
-
-            // let shipyard = {carrier: 5, battleship: 4, destroyer: 3, submarine: 3, patrolBoat: 2}
-
-            // placeNewShip(playerOne, 'carrier', [0, 0], [0, 4]);
-            // placeNewShip(playerOne, 'battleship', [2, 3], [5, 3]);
-            // placeNewShip(playerOne, 'destroyer', [9, 1], [9, 3]);
-            // placeNewShip(playerOne, 'submarine', [5, 5], [7, 5]);
-            // placeNewShip(playerOne, 'patrol boat', [3, 7], [4, 7]);
-
-            placeNewShip(playerTwo, 'carrier', [1, 0], [1, 4]);
-            placeNewShip(playerTwo, 'battleship', [5, 4], [5, 7]);
-            placeNewShip(playerTwo, 'destroyer', [9, 7], [9, 9]);
-            placeNewShip(playerTwo, 'submarine', [1, 8], [3, 8]);
-            placeNewShip(playerTwo, 'patrol boat', [7, 2], [8, 2]);
 
         //end ship placement
         const checkEndShipPlacement = ()=> {
